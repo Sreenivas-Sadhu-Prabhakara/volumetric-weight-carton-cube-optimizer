@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'">
+<title>Volumetric weight and carton-fit calculator for parcel shippers · Open MSME</title>
+<meta name="description" content="Work out the chargeable weight a courier will bill, see whether the scale or the tape measure is charging you and by how much, find the box that stops you paying for air, and count units per carton and cartons per pallet or container.">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Volumetric weight and carton-fit calculator for parcel shippers">
+<meta property="og:description" content="See which of actual and volumetric weight your courier is really billing, by how much, and the smaller box that drops the parcel back onto the scale.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/accent.css">
+<script src="assets/theme-init.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <span class="dot"></span>
+      <b>Open MSME</b>
+      <span class="tag">volumetric weight</span>
+    </a>
+    <span class="sp"></span>
+    <a class="home" href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a>
+    <button class="themer" data-themer type="button">Theme</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Logistics &amp; warehousing · India &amp; Philippines</div>
+      <h1>Volumetric weight and carton-fit calculator for parcel shippers</h1>
+      <p class="lede">Works out the chargeable weight a courier will actually bill, names which of the two weights is doing the charging and by how much, and counts how many units go in your carton and how many cartons go on a pallet or in a container.</p>
+      <div class="who">
+        <span class="pill">D2C sellers, 3PLs, exporters</span>
+        <span class="pill reg">Carrier divisors · 1:5, 1:6, sea LCL W/M</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="cols calc">
+
+      <section class="card">
+        <h2>Inputs</h2>
+
+        <div class="row2">
+          <div class="field">
+            <label>Units</label>
+            <div class="seg" role="group" aria-label="Units">
+              <button type="button" data-sys="metric" aria-pressed="true">cm · kg</button>
+              <button type="button" data-sys="imperial" aria-pressed="false">in · lb</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Currency</label>
+            <div class="seg" role="group" aria-label="Currency">
+              <button type="button" data-cur="INR" aria-pressed="true">₹ INR</button>
+              <button type="button" data-cur="PHP" aria-pressed="false">₱ PHP</button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Mode and rate</h3>
+
+        <div class="field">
+          <label>How it moves <span class="hint">sets the divisor</span></label>
+          <div class="seg" role="group" aria-label="Mode">
+            <button type="button" data-mode="courier" aria-pressed="true">Air courier</button>
+            <button type="button" data-mode="airfreight" aria-pressed="false">Air freight</button>
+            <button type="button" data-mode="surface" aria-pressed="false">Surface</button>
+            <button type="button" data-mode="sealcl" aria-pressed="false">Sea LCL</button>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="divisor">Volumetric divisor <span class="hint">indicative — yours to set</span></label>
+            <div class="inp has-suf">
+              <input type="number" id="divisor" value="5000" min="0" step="any" inputmode="decimal">
+              <span class="suf" id="divisor-unit">cm³/kg</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="rate">Freight rate <span class="hint" id="rate-hint">from your own rate card</span></label>
+            <div class="inp has-pre has-suf">
+              <span class="pre" id="rate-sym">₹</span>
+              <input type="number" id="rate" value="85" min="0" step="any" inputmode="decimal">
+              <span class="suf" id="rate-unit">/kg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Carrier rounds the chargeable weight up to</label>
+          <div class="seg" role="group" aria-label="Rounding step">
+            <button type="button" data-round="0" aria-pressed="false">None</button>
+            <button type="button" data-round="0.5" aria-pressed="true">0.5 kg</button>
+            <button type="button" data-round="1" aria-pressed="false">1 kg</button>
+          </div>
+        </div>
+
+        <div class="note" id="mode-note">The divisor is set by the carrier, not by any standard. Take the figure from your own rate card before you trust the money on this page.</div>
+
+        <h3>The unit you sell</h3>
+
+        <div class="row2">
+          <div class="field">
+            <label for="unitL">Unit length</label>
+            <div class="inp has-suf">
+              <input type="number" id="unitL" value="20" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="unitW">Unit width</label>
+            <div class="inp has-suf">
+              <input type="number" id="unitW" value="14" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="unitH">Unit height</label>
+            <div class="inp has-suf">
+              <input type="number" id="unitH" value="6" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="unitWeight">Weight of one unit</label>
+            <div class="inp has-suf">
+              <input type="number" id="unitWeight" value="0.35" min="0" step="any" inputmode="decimal">
+              <span class="suf mass-suf">kg</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>The carton</h3>
+
+        <div class="row2">
+          <div class="field">
+            <label for="cartonL">Carton outside length</label>
+            <div class="inp has-suf">
+              <input type="number" id="cartonL" value="48" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="cartonW">Carton outside width</label>
+            <div class="inp has-suf">
+              <input type="number" id="cartonW" value="32" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="cartonH">Carton outside height</label>
+            <div class="inp has-suf">
+              <input type="number" id="cartonH" value="32" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="board">Board thickness <span class="hint">one wall</span></label>
+            <div class="inp has-suf">
+              <input type="number" id="board" value="0.5" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="tare">Empty carton weight</label>
+            <div class="inp has-suf">
+              <input type="number" id="tare" value="0.9" min="0" step="any" inputmode="decimal">
+              <span class="suf mass-suf">kg</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="pieces">Cartons in the shipment</label>
+            <div class="inp has-suf">
+              <input type="number" id="pieces" value="8" min="0" step="1" inputmode="numeric">
+              <span class="suf">no.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="unitsShipped">Units in the carton <span class="hint">blank = pack it full</span></label>
+            <div class="inp has-suf">
+              <input type="number" id="unitsShipped" min="0" step="1" inputmode="numeric">
+              <span class="suf">no.</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="weighed">Weighed carton <span class="hint">blank = computed</span></label>
+            <div class="inp has-suf">
+              <input type="number" id="weighed" min="0" step="any" inputmode="decimal">
+              <span class="suf mass-suf">kg</span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Pallet and container</h3>
+
+        <div class="field">
+          <label>Pallet footprint <span class="hint">mm</span></label>
+          <div class="seg" role="group" aria-label="Pallet footprint">
+            <button type="button" data-pallet="p1200x1000" aria-pressed="true">1200×1000</button>
+            <button type="button" data-pallet="p1200x800" aria-pressed="false">1200×800</button>
+            <button type="button" data-pallet="p1219x1016" aria-pressed="false">1219×1016</button>
+            <button type="button" data-pallet="p1100x1100" aria-pressed="false">1100×1100</button>
+            <button type="button" data-pallet="custom" aria-pressed="false">Custom</button>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="palletL">Pallet length</label>
+            <div class="inp has-suf">
+              <input type="number" id="palletL" value="120" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="palletW">Pallet width</label>
+            <div class="inp has-suf">
+              <input type="number" id="palletW" value="100" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="maxStack">Loaded pallet height limit</label>
+            <div class="inp has-suf">
+              <input type="number" id="maxStack" value="180" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="deck">Pallet deck height</label>
+            <div class="inp has-suf">
+              <input type="number" id="deck" value="15" min="0" step="any" inputmode="decimal">
+              <span class="suf len-suf">cm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Container</label>
+          <div class="seg" role="group" aria-label="Container">
+            <button type="button" data-container="c20gp" aria-pressed="false">20' GP</button>
+            <button type="button" data-container="c40gp" aria-pressed="false">40' GP</button>
+            <button type="button" data-container="c40hc" aria-pressed="true">40' HC</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card sticky">
+        <h2>Result</h2>
+
+        <div class="result-primary">
+          <div class="k" id="out-k">Chargeable weight, one carton</div>
+          <div class="v" id="out-main">—</div>
+          <div class="sub" id="out-sub">—</div>
+        </div>
+
+        <p>
+          <span class="pill reg" id="pill-basis">—</span>
+          <span class="pill" id="pill-density">—</span>
+          <span class="pill" id="pill-tip">—</span>
+        </p>
+
+        <div class="note" id="out-verdict">Enter the unit, the carton and the divisor from your rate card.</div>
+        <div class="note" id="out-issues" hidden>—</div>
+
+        <h3>Which weight is charging you</h3>
+        <table class="breakdown">
+          <tbody>
+            <tr><td>Carton outside, as the carrier measures it</td><td class="num" id="r-outer">—</td></tr>
+            <tr><td>Volume</td><td class="num" id="r-volume">—</td></tr>
+            <tr><td>Actual weight on the scale</td><td class="num" id="r-actual">—</td></tr>
+            <tr><td id="r-vol-label">Volumetric weight</td><td class="num" id="r-vol">—</td></tr>
+            <tr class="sub"><td id="r-round-label">Rounded up by the carrier step</td><td class="num" id="r-round">—</td></tr>
+            <tr class="total"><td>Chargeable weight, one carton</td><td class="num" id="r-charge">—</td></tr>
+          </tbody>
+        </table>
+
+        <h3>The shipment and the bill</h3>
+        <table class="breakdown">
+          <tbody>
+            <tr><td>Cartons</td><td class="num" id="s-pieces">—</td></tr>
+            <tr><td>Chargeable weight, all cartons</td><td class="num" id="s-weight">—</td></tr>
+            <tr id="row-rt" hidden><td id="s-rt-label">Revenue tonnes billed</td><td class="num" id="s-rt">—</td></tr>
+            <tr><td id="s-cost-label">Freight on the chargeable weight</td><td class="num" id="s-cost">—</td></tr>
+            <tr class="sub"><td>Freight if volume had never counted</td><td class="num" id="s-costactual">—</td></tr>
+            <tr class="total"><td>What the empty space costs you</td><td class="num neg" id="s-void">—</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Where the two weights cross</h3>
+        <table class="breakdown">
+          <tbody>
+            <tr><td>Break-even volume <span class="hint">scale weight × divisor</span></td><td class="num" id="t-breakeven">—</td></tr>
+            <tr><td>Break-even density <span class="hint">lighter than this and volume wins</span></td><td class="num" id="t-density">—</td></tr>
+            <tr><td>This parcel's density</td><td class="num" id="t-mydensity">—</td></tr>
+            <tr><td id="t-head-label">Volume headroom left</td><td class="num" id="t-head">—</td></tr>
+            <tr><td>Tipping height, length and width unchanged</td><td class="num" id="t-tipheight">—</td></tr>
+            <tr class="total"><td>The same box scaled onto the line</td><td class="num" id="t-evenbox">—</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Units in the carton</h3>
+        <table class="breakdown">
+          <tbody>
+            <tr><td>Carton inside, outside less two walls</td><td class="num" id="f-inner">—</td></tr>
+            <tr><td>One unit</td><td class="num" id="f-unit">—</td></tr>
+            <tr><td>Best of the six orientations</td><td class="num" id="f-orient">—</td></tr>
+            <tr><td id="f-perlayer-label">Units per layer</td><td class="num" id="f-perlayer">—</td></tr>
+            <tr><td>Layers</td><td class="num" id="f-layers">—</td></tr>
+            <tr class="total"><td>Units per carton</td><td class="num" id="f-total">—</td></tr>
+            <tr class="sub"><td id="f-fill-label">Cube fill inside the carton</td><td class="num" id="f-fill">—</td></tr>
+            <tr class="sub"><td>Void left inside</td><td class="num" id="f-void">—</td></tr>
+            <tr class="sub"><td>Air in that void, priced as weight</td><td class="num" id="f-voidkg">—</td></tr>
+          </tbody>
+        </table>
+        <div class="note" id="fit-method">—</div>
+
+        <h3>Pallet and container</h3>
+        <table class="breakdown">
+          <tbody>
+            <tr><td>Pallet footprint</td><td class="num" id="p-foot">—</td></tr>
+            <tr><td>Usable stack height above the deck</td><td class="num" id="p-usable">—</td></tr>
+            <tr><td id="p-grid-label">Cartons per layer × layers</td><td class="num" id="p-grid">—</td></tr>
+            <tr class="total"><td>Cartons per pallet</td><td class="num" id="p-total">—</td></tr>
+            <tr class="sub"><td>Units per pallet</td><td class="num" id="p-units">—</td></tr>
+            <tr class="sub"><td>Loaded height and gross weight</td><td class="num" id="p-load">—</td></tr>
+            <tr class="sub"><td>Pallet cube fill</td><td class="num" id="p-fill">—</td></tr>
+            <tr><td id="c-loose-label">Cartons loose-loaded in the container</td><td class="num" id="c-loose">—</td></tr>
+            <tr><td id="c-pallets-label">Pallets on the container floor</td><td class="num" id="c-pallets">—</td></tr>
+          </tbody>
+        </table>
+
+        <h3>The box that stops you paying for air</h3>
+        <table class="breakdown">
+          <thead>
+            <tr><th>Box</th><th class="num">Chargeable</th><th class="num">Freight</th></tr>
+          </thead>
+          <tbody>
+            <tr><td id="w-now-dims">Your carton</td><td class="num" id="w-now-kg">—</td><td class="num" id="w-now-cost">—</td></tr>
+            <tr><td id="w-rs-dims">Right-size carton</td><td class="num" id="w-rs-kg">—</td><td class="num" id="w-rs-cost">—</td></tr>
+            <tr class="total"><td>Saving on this shipment</td><td class="num" id="w-save-kg">—</td><td class="num" id="w-save">—</td></tr>
+          </tbody>
+        </table>
+        <div class="note" id="w-note">—</div>
+
+        <div class="btnrow">
+          <button class="btn ghost" id="print" type="button">Print / Save PDF</button>
+          <button class="btn ghost" id="reset" type="button">Reset</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section class="prose">
+      <h2>How it works</h2>
+      <p>A carrier bills the greater of two numbers. One comes off the weighing scale. The other comes off the tape measure: multiply the outside length, width and height of the carton, divide by a number the carrier chooses, and call the answer kilograms. That number is the <strong>volumetric divisor</strong>, and it is the whole game. A courier card dividing by 5,000 is saying that anything lighter than 200 kg per cubic metre will be billed on its size rather than its weight. An air-freight card dividing by 6,000 says 167 kg per cubic metre. A surface card dividing by 4,000 says 250. The same carton, unchanged, can be billed at three different weights on the same day.</p>
+      <p>So the page computes both weights and says plainly which one is charging you and by how much. <code>volumetric kg = L × W × H ÷ divisor</code>, then <code>chargeable = the greater of actual and volumetric</code>, rounded up to the carrier's step. The gap between the two is the air you are paying for, and it is priced twice over: once as the extra kilograms, and once as money, by pricing the shipment again with the volume rule switched off and taking the difference.</p>
+      <p>The two weights cross at exactly one volume: <code>break-even volume = actual weight × divisor</code>. Below it the scale is billing you and the extra size is free; above it the tape measure is billing you and the extra weight is free. From that one line come the tipping height — hold the length and width, and this is the height at which the box flips over — and the same box scaled onto the line, which is the largest box of that shape that would still be billed on the scale.</p>
+      <p>Sea LCL looks like a different rule and is not. It is billed per revenue tonne: the greater of the cubic metres and the metric tonnes, the weight-or-measurement rule, at 1 CBM to 1,000 kg. That is the same comparison with a divisor of 1,000, so the page runs the same arithmetic and changes only the billing unit and the one-revenue-tonne minimum.</p>
+
+      <h2>Units per carton, cartons per pallet</h2>
+      <p>The fit side is deliberately simple arithmetic, and it is important to say what it is not. The page takes the unit, takes the carton's inside dimensions — the outside, less two wall thicknesses on each axis — and lays the units out in a plain grid: so many along, so many across, so many layers. It does that in all six ways the unit can be turned, and reports the best, with the cube fill and the void left over. Pallets and containers are the same routine with the carton as the item.</p>
+      <p><strong>This is an axis-aligned orientation check, not a bin-packing solver.</strong> Every unit lies the same way up in a regular grid. Real packers beat it: mixed orientations, interlocked and pinwheel layers, nesting, a bit of squeeze on a soft product. The gap is not small — a 20-foot container takes eleven 1200 × 800 pallets on a mixed floor pattern where this grid check finds eight. Read every count on the page as a safe floor you can certainly achieve, never as an optimum, and never as a reason to tell a packer they are doing it wrong.</p>
+      <p>The void matters because it is not free. Empty space inside a carton weighs nothing on the scale and plenty on the tape measure, so the page prices it: the void volume run through the same divisor is the weight you are paying to ship air. That is what links the two halves. The last table takes the units you are actually putting in the carton, finds the smallest grid box that holds them, and prices that box against the one you are using. When the smaller box drops the parcel back onto its actual weight, the saving is the whole difference.</p>
+
+      <details class="assumptions">
+        <summary>Assumptions &amp; rates</summary>
+        <ul id="ref-modes"></ul>
+        <ul>
+          <li>Chargeable weight is compared per carton. All cartons in a shipment are treated as identical, which is why the per-carton and whole-shipment comparisons agree. A mixed shipment has to be checked carton by carton, and some carriers compare the summed volume of the whole shipment against the summed scale weight instead.</li>
+          <li>Rounding applies to the chargeable weight, in your own mass unit, after the comparison — <span id="ref-round">—</span>. Sea LCL bills revenue tonnes to three decimals, so the kilogram step is not applied in that mode.</li>
+          <li>Some carriers round <em>each dimension</em> up to the next whole centimetre before multiplying. This page uses the figures you type. If yours does, enter the rounded-up dimensions.</li>
+          <li>Carriers measure the outside of the box at its widest point: tape, bulge, protruding labels and all. Measure the carton as it leaves the packing bench, not as it reads on the flat.</li>
+          <li>Carton inside dimensions are the outside less two wall thicknesses per axis, from the board thickness you enter. The single-wall default is <span id="ref-board">—</span>; double-wall board runs roughly 6 to 8 mm.</li>
+          <li>Cube fill and the void are measured against the units actually going in the carton, not against its capacity, because a half-filled carton is charged on the same cube as a full one.</li>
+          <li>Switching between centimetres and inches converts every field you have typed and rewrites it rounded for legibility — to one decimal in centimetres, two in inches. The divisor is converted the same way, so a custom divisor survives the switch instead of jumping back to the mode default. A rate per pound is finer than a rate per kilogram, and a half-pound rounding step is finer than a half-kilogram one, so the two systems can differ by a fraction of a percent. That is the rate card's doing, not the arithmetic's.</li>
+          <li>The fit grid assumes no clearance between units and no dunnage or void fill. In practice allow a few millimetres per unit, and remember a carton maker works to the sizes and flutes they stock, so round a right-size box up to the nearest one they quote.</li>
+          <li>The right-size box keeps the empty-carton weight you entered. A smaller box uses less board and weighs less, so the saving shown is understated rather than overstated.</li>
+          <li>Pallet footprints are <span id="ref-pallets">—</span>, all ISO 6780 sizes, in millimetres. Overhang is not allowed for and the pallet deck height is subtracted from your stack limit.</li>
+          <li>Container internal dimensions are <span id="ref-containers">—</span>. They are indicative: they differ by builder and by age of the box, sometimes by several centimetres, so take them from the container you are actually given. The door opening is always smaller than the inside, and a loaded pallet that clears the inside height but not the door does not go in — the page checks that.</li>
+          <li>Pallets on a container floor are a single tier in one orientation. Double-stacking is often possible if the cargo bears the load, and a mixed floor pattern fits more.</li>
+          <li>Freight rates open with a round indicative placeholder so the money column is never blank: <span id="ref-rates">—</span>. They are illustration, not quotations. Fuel, security, remote-area, residential and handling surcharges, demurrage, duties and taxes are all out of scope.</li>
+        </ul>
+      </details>
+
+      <div class="note">An estimating tool for the packing bench, not a quotation and not a carrier's invoice. Divisors, rounding steps, minimum chargeable weights and surcharges are set by each carrier in each contract, and the only authority on what you will be billed is your own rate card. The fit counts are a conservative grid check, not a packing optimum. Nothing you type leaves your device.</div>
+    </section>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Open MSME · open-source tool for MSMEs in India &amp; the Philippines · MIT</span>
+    <span><a href="https://sreenivas-sadhu-prabhakara.github.io/openmsme/">All tools</a></span>
+  </div>
+</footer>
+
+<script src="assets/ui.js"></script>
+<script src="assets/cube.js"></script>
+<script src="assets/calc.js"></script>
+</body>
+</html>
